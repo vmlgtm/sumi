@@ -1,92 +1,125 @@
-# Sumi (墨)
+# Sumi
 
-> Ultra-fast, radical-minimalist, local-first notes in your browser Side Panel and dedicated tab.
+A local-first, distraction-free scratchpad built as a Chrome Side Panel and dedicated tab companion.
 
-Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides a distraction-free, zero-latency scratchpad that opens instantly alongside any webpage (`Cmd + Shift + S` or toolbar click) or as an immersive full-screen writing tab.
-
----
-
-## ✨ Features
-
-- **⚡ Blazing Fast Boot**: Renders in under 50ms with zero layout shift and immediate cursor autofocus.
-- **📄 Ink on Paper Aesthetics**: Crisp pure white canvas (`#FFFFFF`) with deep charcoal typography (`#09090B`).
-- **🌙 "Inverse Ink" Dark Mode (`⌘⇧D`)**: Deep obsidian canvas (`#09090B`) with high-contrast porcelain typography (`#FAFAFA`), auto-detecting OS theme.
-- **🚫 Zero AI Slop & No Browser Hijacking**: Keeps your standard new tab and search bar untouched. No login walls, badges, notifications, cloud sync popups, or multi-megabyte databases.
-- **🖥️ Native Side Panel + Full Tab**:
-  - Open in Chrome's native Side Panel while reading, coding, or browsing.
-  - 1-click expand button (`⤢`) opens a spacious full tab and cleanly dismisses the side panel.
-  - Native `BroadcastChannel` provides instant, zero-lag synchronization across all open windows.
-- **🔍 Smart Omnibox Address-Bar Capture**:
-  - Type `sumi <tab>` in Chrome's address bar to instantly search your notes.
-  - Typing `sumi <thought>` appends a new task item (`- [ ]`) directly to your pinned Daily Scratchpad.
-  - Typing `sumi new <title>` creates a fresh note immediately.
-- **⌨️ 100% Keyboard Driven**:
-  - `Cmd + Shift + S` — Toggle Sumi in Side Panel
-  - `Option + N` (`⌥N` / `Alt + N`) or `c` — Create new note
-  - `Cmd + Shift + D` — Toggle Dark / Light theme
-  - `Cmd + K` — Instant search (< 5ms response)
-  - `Cmd + P` — Pin / unpin note to top
-  - `Cmd + B` / `Cmd + I` — True inline bold & italic
-  - `Cmd + E` or ``` `code` ``` — Inline monospace code chip
-  - `[] ` or `- [ ] ` + Space — Interactive checklist task with strikethrough toggle
-  - `- ` + Space — Auto-bulleted list
-  - `1. ` + Space — Auto-numbered list
-  - `Cmd + /` — Cheatsheet modal
-- **🤫 Quiet & Tranquil Save**: Zero word flickering or distraction while typing; saves silently with state indicator only after typing settles.
-- **🔒 100% Offline & Private**: Zero analytics, zero tracking, zero external network requests.
-- **💾 Local-First Persistence**: Synchronous debounced persist (250ms) to IndexedDB with automatic ghost note pruning (empty abandoned notes are cleaned up silently).
-- **📦 Data Portability**: 1-click JSON database backup & import, 1-click Markdown download per note (with clean `- [x]`, `- [ ]`, and code blocks).
+Sumi provides an ultra-fast, keyboard-driven writing surface that opens alongside any webpage or expands into an immersive full-screen canvas. It is engineered with strict constraints: zero network telemetry, zero third-party font/icon downloads, sub-50ms boot times, and a production bundle under 80 KB gzipped.
 
 ---
 
-## 🚀 Getting Started
+## Capabilities
 
-### Prerequisites
+### Inline WYSIWYG Editing
+- **Clean Canvas**: Type without markdown syntax clutter. Formatting renders inline immediately.
+- **Interactive Checklists**: Type `[] ` or `- [ ] ` followed by space to create a task item. Click or toggle items with smooth strikethrough.
+- **Lists**: Automatic conversion for bulleted (`- `) and numbered (`1. `) lists, with intuitive `Enter` continuation and empty `Enter` exit.
+- **Inline Code**: Monospace chips via ``` `multi word code` ``` or `⌘E` selection wrapping.
+- **Minimal Links**: Hyperlinks adopt the body text color with a quiet slate baseline underline (`#C7C7CC` / `#545458`), avoiding harsh blue accents.
+  - Auto-detection on `Space` / `Enter` for raw URLs.
+  - Paste-to-link (`⌘V` on selected text wraps it into a link without overwriting).
+  - Markdown syntax `[label](url)` auto-converts on closing parenthesis.
+  - Contextual `⌘K` link modal inside the editor.
+  - Hover tooltip with URL preview, copy, edit, and unlink actions.
+  - `⌘`-click (or `Ctrl`-click) to open in a new tab.
 
+### Dual Workspace
+- **Side Panel (`⌘⇧S`)**: Dock Sumi beside your code, articles, or documentation in Chrome's native Side Panel.
+- **Full Tab Expansion (`⤢` / `⌥O`)**: One click expands your current note into a full browser tab and dismisses the sidebar for deep focus.
+- **Cross-Window Sync**: Synchronized across windows and panels in real-time via `BroadcastChannel`.
+
+### Keyboard-First Navigation
+Every core action can be executed without leaving the keyboard:
+- `⌥N` or `c` — Create note
+- `⌘K` — Instant search (when unfocused) or link insertion (when editor focused)
+- `↑` / `↓` — Navigate search results and note list
+- `⌘P` — Pin note to top of library
+- `⌘⇧D` — Toggle light / warm graphite dark mode
+- `⌘/` — View keyboard shortcuts cheatsheet
+- `⌘⌫` — Delete selected note
+
+### Address Bar Capture (Omnibox)
+Type `sumi` followed by `Tab` or `Space` in Chrome's address bar:
+- `sumi <query>` — Live-search your notes directly from the browser bar.
+- `sumi <thought>` — Instantly appends a `- [ ]` checklist task to your pinned Daily Scratchpad.
+- `sumi new <title>` — Creates a new note immediately.
+
+### Local-First Persistence & Privacy
+- **100% Offline**: Zero analytics, zero cookies, zero external network requests.
+- **Storage**: IndexedDB storage with debounced persistence (250ms), in-memory cache, and `localStorage` fallback.
+- **Silent Saving**: Saving status is quiet and unobtrusive; no flickering indicators while typing.
+- **Ghost Pruning**: Automatically prunes abandoned empty notes on navigation.
+- **Portability**: Full JSON database backup and restore, plus single-note clean Markdown (`.md`) export.
+
+---
+
+## Keyboard Shortcuts
+
+| Category | Shortcut | Action |
+| :--- | :--- | :--- |
+| **Navigation** | `⌥N` or `c` | Create a new note |
+| | `⌘K` | Instant global search |
+| | `↑` / `↓` | Navigate note list / search results |
+| | `Enter` | Select note / open search result |
+| | `Esc` | Clear search / dismiss modals |
+| | `⌘P` | Pin / unpin note |
+| | `⌘⌫` | Delete active note |
+| **Formatting** | `⌘B` / `⌘I` | Bold / Italic |
+| | `⌘E` | Inline code chip |
+| | ``` `code` ``` | Auto code formatting on backtick |
+| | `⌘K` | Insert / edit link (when editor focused) |
+| | `[text](url)` | Markdown link auto-conversion |
+| | `⌘Click` | Open hyperlink in new tab |
+| | `[] ` / `- [ ] ` | Interactive checklist |
+| | `- ` + Space | Bulleted list |
+| | `1. ` + Space | Numbered list |
+| **System** | `⌘⇧S` | Toggle Side Panel |
+| | `⌘⇧D` | Toggle light / dark theme |
+| | `⌘/` | Open shortcuts cheatsheet |
+
+---
+
+## Design System
+
+Sumi's visual identity, typography, and color tokens are formally specified using the [Google Labs DESIGN.md format](https://github.com/google-labs-code/design.md). See [`DESIGN.md`](./DESIGN.md) for normative token values, contrast standards, and architectural rules.
+
+---
+
+## Getting Started
+
+### Requirements
 - Node.js 18+ (tested on Node 22+)
-- `pnpm` (or `npm`)
+- `pnpm` (recommended) or `npm`
 
-### Installation & Local Development
-
+### Local Development
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/sumi.git
+git clone https://github.com/invaibhavdev/sumi.git
 cd sumi
-
-# Install dependencies
 pnpm install
-
-# Start local development server
 pnpm run dev
 ```
 
-Visit `http://localhost:5173` in your browser.
+Visit `http://localhost:5173` to test in the browser.
 
----
-
-## 🌐 Chrome Extension Installation
-
-1. Build the production package:
+### Chrome Extension Installation
+1. Build the production bundle:
    ```bash
    pnpm run build
    ```
-2. Open Chrome (or Brave / Edge) and navigate to `chrome://extensions`.
-3. Enable **Developer mode** (toggle in the top-right corner).
-4. Click **Load unpacked** and select the `dist` folder inside the `sumi` repository.
-5. Click the Sumi toolbar icon or press **`Cmd + Shift + S`** to toggle Sumi in your Side Panel on any website! You can also click the expand icon (`⤢`) to use it in a full browser tab.
+2. Open Chrome and navigate to `chrome://extensions`.
+3. Enable **Developer mode** (toggle in the upper right corner).
+4. Click **Load unpacked** and select the `dist` folder generated inside the `sumi` repository.
+5. Click the Sumi toolbar icon or press `⌘⇧S` to open the Side Panel on any website.
 
 ---
 
-## 🛠 Tech Stack
+## Specifications
 
-- **Framework**: React 19 + TypeScript
-- **Bundler**: Vite 6 (Single bundle < 80KB gzipped)
-- **Styling**: Tailwind CSS
-- **Storage**: Native IndexedDB with fallback memory cache and `localStorage` backup
-- **Extension API**: Manifest V3 (`chrome_url_overrides.newtab`)
+- **Bundle Size**: 77.44 KB gzipped JavaScript (vendor + app code combined).
+- **Cold Boot**: < 50ms initial paint.
+- **Dependencies**: React 19, TypeScript 5.7, Tailwind CSS 3.4, Vite 6.
+- **Manifest**: Chrome Extensions Manifest V3.
 
 ---
 
-## 📜 License
+## License
 
-MIT License. Free and open source.
+MIT
