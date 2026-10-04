@@ -184,7 +184,7 @@ export const Editor: React.FC<EditorProps> = ({
       <div className="flex-1 flex flex-col items-center justify-center text-ink-400 p-8 select-none">
         <div className="text-3xl mb-2">墨</div>
         <p className="text-xs">No active note</p>
-        <p className="text-xs text-ink-300 mt-1">Press ⌘N to create a note</p>
+        <p className="text-xs text-ink-300 mt-1">Press ⌥N or c to create a note</p>
       </div>
     );
   }

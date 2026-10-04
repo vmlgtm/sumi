@@ -37,12 +37,13 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
 
   const isMac = typeof navigator !== 'undefined' && navigator.userAgent.includes('Mac');
   const modKey = isMac ? '⌘' : 'Ctrl+';
+  const altKey = isMac ? '⌥' : 'Alt+';
 
   const shortcutGroups = [
     {
       title: 'Navigation & Organization',
       shortcuts: [
-        { key: `${modKey}N`, desc: 'New note' },
+        { key: `${altKey}N / c`, desc: 'New note' },
         { key: `${modKey}K`, desc: 'Focus instant search' },
         { key: `${modKey}P`, desc: 'Toggle pinned status' },
         { key: '↑ / ↓', desc: 'Navigate note list' },

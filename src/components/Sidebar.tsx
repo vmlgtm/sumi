@@ -102,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex items-center space-x-1">
           <button
             onClick={onCreateNote}
-            title="New Note (⌘N)"
+            title="New Note (⌥N or c)"
             className="p-1.5 rounded text-ink-700 hover:text-ink-950 hover:bg-ink-200/60 transition-colors focus:outline-none focus:ring-1 focus:ring-ink-400"
             aria-label="Create note"
           >

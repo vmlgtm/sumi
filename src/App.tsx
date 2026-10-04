@@ -42,6 +42,13 @@ export const App: React.FC = () => {
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
+      const isAlt = e.altKey;
+
+      const activeEl = document.activeElement;
+      const isTyping =
+        activeEl?.tagName === 'INPUT' ||
+        activeEl?.tagName === 'TEXTAREA' ||
+        activeEl?.getAttribute('contenteditable') === 'true';
 
       // Cmd + K: Focus Search
       if (isMod && (e.key === 'k' || e.key === 'K')) {
@@ -52,14 +59,30 @@ export const App: React.FC = () => {
         return;
       }
 
-      // Cmd + N: New Note
-      if (isMod && (e.key === 'n' || e.key === 'N')) {
+      // New Note: Option + N (⌥N) or Cmd + Option + N (avoids browser's Cmd+N new window), or Cmd + N if allowed
+      if (
+        (isAlt && (e.code === 'KeyN' || e.key.toLowerCase() === 'n')) ||
+        (isMod && isAlt && (e.code === 'KeyN' || e.key.toLowerCase() === 'n')) ||
+        (isMod && (e.key === 'n' || e.key === 'N'))
+      ) {
         e.preventDefault();
         createNote();
         requestAnimationFrame(() => {
           titleInputRef.current?.focus();
         });
         return;
+      }
+
+      // Quick key 'c' or 'n' when not typing in an input or editor
+      if (!isMod && !isAlt && !e.shiftKey && !isTyping) {
+        if (e.key === 'c' || e.key === 'C' || e.key === 'n' || e.key === 'N') {
+          e.preventDefault();
+          createNote();
+          requestAnimationFrame(() => {
+            titleInputRef.current?.focus();
+          });
+          return;
+        }
       }
 
       // Cmd + P: Toggle Pin

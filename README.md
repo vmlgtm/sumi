@@ -13,7 +13,7 @@ Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides
 - **🚫 Zero AI Slop & Clutter**: No login walls, badges, notifications, cloud sync popups, or multi-megabyte databases.
 - **⌨️ 100% Keyboard Driven**:
   - `Cmd + T` — Instant scratchpad on new tab
-  - `Cmd + N` — Create new note
+  - `Option + N` (`⌥N` / `Alt + N`) or `c` — Create new note (prevents browser new window collision)
   - `Cmd + K` — Instant search (< 5ms response)
   - `Cmd + P` — Pin / unpin note to top
   - `Cmd + B` / `Cmd + I` — True inline bold & italic
