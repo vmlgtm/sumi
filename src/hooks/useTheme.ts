@@ -51,11 +51,10 @@ export function useTheme() {
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setTheme(prev => {
-      const next: ThemeMode = prev === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('sumi_theme', next);
-      return next;
-    });
+    const isCurrentlyDark = document.documentElement.classList.contains('dark');
+    const next: ThemeMode = isCurrentlyDark ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('sumi_theme', next);
   }, []);
 
   const setThemeMode = useCallback((mode: ThemeMode) => {
