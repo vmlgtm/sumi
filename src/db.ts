@@ -70,12 +70,21 @@ class StorageService {
   }
 
   async saveNote(note: Note): Promise<void> {
+    const cleanNote: Note = {
+      id: String(note.id),
+      title: typeof note.title === 'string' ? note.title : '',
+      contentHtml: typeof note.contentHtml === 'string' ? note.contentHtml : '',
+      pinned: Boolean(note.pinned),
+      createdAt: typeof note.createdAt === 'number' ? note.createdAt : Date.now(),
+      updatedAt: typeof note.updatedAt === 'number' ? note.updatedAt : Date.now(),
+    };
+
     try {
       const db = await this.initDB();
       return new Promise<void>((resolve, reject) => {
         const transaction = db.transaction(STORE_NAME, 'readwrite');
         const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(note);
+        const request = store.put(cleanNote);
 
         request.onsuccess = () => resolve();
         request.onerror = () => reject(request.error);
@@ -83,11 +92,11 @@ class StorageService {
     } catch {
       // Fallback to localStorage
       const notes = this.getFromLocalStorage();
-      const index = notes.findIndex(n => n.id === note.id);
+      const index = notes.findIndex(n => n.id === cleanNote.id);
       if (index >= 0) {
-        notes[index] = note;
+        notes[index] = cleanNote;
       } else {
-        notes.push(note);
+        notes.push(cleanNote);
       }
       this.saveToLocalStorage(notes);
     }

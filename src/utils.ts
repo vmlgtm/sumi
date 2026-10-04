@@ -1,14 +1,14 @@
 import { Note } from './types';
 
-export function stripHtml(html: string): string {
-  if (!html) return '';
+export function stripHtml(html: unknown): string {
+  if (typeof html !== 'string' || !html) return '';
   const doc = new DOMParser().parseFromString(html, 'text/html');
   return (doc.body.textContent || '').trim();
 }
 
-export function isNoteEmpty(title: string, contentHtml: string): boolean {
-  const plainTitle = title.trim();
-  const plainContent = stripHtml(contentHtml);
+export function isNoteEmpty(title: unknown, contentHtml: unknown): boolean {
+  const plainTitle = typeof title === 'string' ? title.trim() : '';
+  const plainContent = typeof contentHtml === 'string' ? stripHtml(contentHtml) : '';
   return plainTitle.length === 0 && plainContent.length === 0;
 }
 

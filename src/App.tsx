@@ -196,7 +196,7 @@ export const App: React.FC = () => {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onSelectNote={selectNote}
-        onCreateNote={createNote}
+        onCreateNote={() => createNote()}
         onTogglePin={(id, e) => {
           e.stopPropagation();
           togglePin(id);

@@ -117,7 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <div className="flex items-center space-x-1">
             <button
-              onClick={onCreateNote}
+              onClick={() => onCreateNote()}
               title="New Note (⌥N or c)"
               className="p-1.5 rounded text-ink-700 dark:text-ink-300 hover:text-ink-950 dark:hover:text-ink-50 hover:bg-ink-200/60 dark:hover:bg-ink-800/60 transition-colors focus:outline-none focus:ring-1 focus:ring-ink-400"
               aria-label="Create note"
@@ -205,8 +205,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           }`}
                         >
                           <div className="flex items-center justify-between gap-1">
-                            <span className={`text-xs truncate font-medium ${!note.title ? 'italic text-ink-400 dark:text-ink-600' : ''}`}>
-                              {note.title.trim() || 'Untitled'}
+                            <span className={`text-xs truncate font-medium ${!(typeof note.title === 'string' && note.title.trim()) ? 'italic text-ink-400 dark:text-ink-600' : ''}`}>
+                              {(typeof note.title === 'string' && note.title.trim()) || 'Untitled'}
                             </span>
                             <div className="flex items-center space-x-1 shrink-0">
                               <button
@@ -270,8 +270,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           }`}
                         >
                           <div className="flex items-center justify-between gap-1">
-                            <span className={`text-xs truncate font-medium ${!note.title ? 'italic text-ink-400 dark:text-ink-600' : ''}`}>
-                              {note.title.trim() || 'Untitled'}
+                            <span className={`text-xs truncate font-medium ${!(typeof note.title === 'string' && note.title.trim()) ? 'italic text-ink-400 dark:text-ink-600' : ''}`}>
+                              {(typeof note.title === 'string' && note.title.trim()) || 'Untitled'}
                             </span>
                             <div className="flex items-center space-x-1 shrink-0">
                               <button

@@ -3,6 +3,17 @@ import { Note, SaveStatus, SumiExportData } from '../types';
 import { storage } from '../db';
 import { isNoteEmpty, htmlToMarkdown, downloadFile, createWelcomeNote, stripHtml } from '../utils';
 
+function sanitizeNotes(loaded: Note[]): Note[] {
+  return (loaded || []).map(n => ({
+    ...n,
+    title: typeof n.title === 'string' ? n.title : '',
+    contentHtml: typeof n.contentHtml === 'string' ? n.contentHtml : '',
+    pinned: Boolean(n.pinned),
+    createdAt: typeof n.createdAt === 'number' ? n.createdAt : Date.now(),
+    updatedAt: typeof n.updatedAt === 'number' ? n.updatedAt : Date.now(),
+  }));
+}
+
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -29,7 +40,8 @@ export function useNotes() {
       channel.onmessage = async (e) => {
         if (e.data?.type === 'note_updated') {
           try {
-            const loaded = await storage.getAllNotes();
+            const raw = await storage.getAllNotes();
+            const loaded = sanitizeNotes(raw);
             const sorted = loaded.sort((a, b) => {
               if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
               return b.updatedAt - a.updatedAt;
@@ -53,8 +65,9 @@ export function useNotes() {
 
     async function load() {
       try {
-        const loaded = await storage.getAllNotes();
+        const raw = await storage.getAllNotes();
         if (!mounted) return;
+        const loaded = sanitizeNotes(raw);
 
         // Check if a specific note was requested via URL query (e.g. Omnibox navigation)
         const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
@@ -100,7 +113,8 @@ export function useNotes() {
   useEffect(() => {
     const handleFocus = async () => {
       try {
-        const loaded = await storage.getAllNotes();
+        const raw = await storage.getAllNotes();
+        const loaded = sanitizeNotes(raw);
         if (loaded.length > 0) {
           const sorted = [...loaded].sort((a, b) => {
             if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
@@ -159,10 +173,13 @@ export function useNotes() {
       pruneGhostNote(activeIdRef.current);
     }
 
+    const titleStr = typeof initialTitle === 'string' ? initialTitle : '';
+    const contentStr = typeof initialContent === 'string' ? initialContent : '';
+
     const newNote: Note = {
       id: 'note_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-      title: initialTitle,
-      contentHtml: initialContent,
+      title: titleStr,
+      contentHtml: contentStr,
       pinned: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
