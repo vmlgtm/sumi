@@ -25,7 +25,9 @@ export const App: React.FC = () => {
   } = useNotes();
 
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 768
+  );
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -36,6 +38,10 @@ export const App: React.FC = () => {
     setTimeout(() => {
       setToastMessage(null);
     }, 3000);
+  }, []);
+
+  const handleOpenFullTab = useCallback(() => {
+    window.open(window.location.href, '_blank');
   }, []);
 
   // Global keyboard shortcuts
@@ -200,6 +206,7 @@ export const App: React.FC = () => {
           if (activeId) handleDeleteWithFeedback(activeId);
         }}
         onExportMarkdown={exportActiveToMarkdown}
+        onOpenFullTab={handleOpenFullTab}
         onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
         isSidebarCollapsed={isSidebarCollapsed}
         titleInputRef={titleInputRef}

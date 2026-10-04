@@ -65,6 +65,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
     {
       title: 'Shortcuts & Safety',
       shortcuts: [
+        { key: `${modKey}⇧S`, desc: 'Toggle Side Panel' },
         { key: `${modKey}/`, desc: 'Open shortcut cheatsheet' },
         { key: `${modKey}Backspace`, desc: 'Delete active note' },
       ],

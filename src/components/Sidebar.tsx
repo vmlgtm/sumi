@@ -81,13 +81,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const allFilteredFlat = [...pinnedNotes, ...regularNotes];
 
+  const handleItemSelect = (id: string) => {
+    onSelectNote(id);
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && !isCollapsed) {
+      onToggleCollapse();
+    }
+  };
+
   return (
-    <aside
-      className={`fixed md:static inset-y-0 left-0 z-30 flex flex-col bg-ink-50/90 backdrop-blur-md md:backdrop-blur-none border-r border-ink-200 transition-all duration-200 ease-in-out shrink-0 select-none ${
-        isCollapsed ? '-translate-x-full md:translate-x-0 md:w-0 md:border-r-0 md:overflow-hidden' : 'w-64 translate-x-0'
-      }`}
-      aria-label="Notes navigation"
-    >
+    <>
+      {/* Mobile / Side-panel backdrop */}
+      {!isCollapsed && (
+        <div
+          onClick={onToggleCollapse}
+          className="fixed inset-0 bg-ink-950/20 z-20 md:hidden backdrop-blur-2xs transition-opacity duration-200"
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`fixed md:static inset-y-0 left-0 z-30 flex flex-col bg-ink-50/95 backdrop-blur-md md:backdrop-blur-none border-r border-ink-200 transition-all duration-200 ease-in-out shrink-0 select-none ${
+          isCollapsed ? '-translate-x-full md:translate-x-0 md:w-0 md:border-r-0 md:overflow-hidden' : 'w-64 translate-x-0'
+        }`}
+        aria-label="Notes navigation"
+      >
       {/* Header & Branding */}
       <div className="p-3 pb-2 flex items-center justify-between border-b border-ink-200/60">
         <div className="flex items-center space-x-2">
@@ -180,7 +197,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={note.id}
                         data-note-item
                         tabIndex={0}
-                        onClick={() => onSelectNote(note.id)}
+                        onClick={() => handleItemSelect(note.id)}
                         onKeyDown={e => handleNoteKeyDown(e, flatIdx, allFilteredFlat)}
                         className={`group relative flex flex-col px-2.5 py-2 rounded-md cursor-pointer text-left transition-colors duration-100 outline-none focus:ring-1 focus:ring-ink-400 ${
                           isActive
@@ -245,7 +262,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         key={note.id}
                         data-note-item
                         tabIndex={0}
-                        onClick={() => onSelectNote(note.id)}
+                        onClick={() => handleItemSelect(note.id)}
                         onKeyDown={e => handleNoteKeyDown(e, flatIdx, allFilteredFlat)}
                         className={`group relative flex flex-col px-2.5 py-2 rounded-md cursor-pointer text-left transition-colors duration-100 outline-none focus:ring-1 focus:ring-ink-400 ${
                           isActive
@@ -342,5 +359,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
     </aside>
+  </>
   );
 };

@@ -61,6 +61,27 @@ export function useNotes() {
     };
   }, []);
 
+  // Sync state when tab or side panel regains focus
+  useEffect(() => {
+    const handleFocus = async () => {
+      try {
+        const loaded = await storage.getAllNotes();
+        if (loaded.length > 0) {
+          const sorted = [...loaded].sort((a, b) => {
+            if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+            return b.updatedAt - a.updatedAt;
+          });
+          setNotes(sorted);
+        }
+      } catch (err) {
+        // Silently ignore sync errors
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
   // Ghost note pruner helper
   const pruneGhostNote = useCallback((noteId: string) => {
     const target = notesRef.current.find(n => n.id === noteId);

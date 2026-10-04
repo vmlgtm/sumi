@@ -1,8 +1,8 @@
 # Sumi (墨)
 
-> Ultra-fast, radical-minimalist, local-first notes for your browser new tab.
+> Ultra-fast, radical-minimalist, local-first notes in your browser Side Panel and dedicated tab.
 
-Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides a distraction-free, zero-latency scratchpad that opens in `< 50ms` on every `Cmd + T`.
+Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides a distraction-free, zero-latency scratchpad that opens instantly alongside any webpage (`Cmd + Shift + S` or toolbar click) or as an immersive full-screen writing tab.
 
 ---
 
@@ -10,10 +10,14 @@ Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides
 
 - **⚡ Blazing Fast Boot**: Renders in under 50ms with zero layout shift and immediate cursor autofocus.
 - **📄 Ink on Paper Aesthetics**: Crisp pure white canvas (`#FFFFFF`) with deep charcoal typography (`#09090B`).
-- **🚫 Zero AI Slop & Clutter**: No login walls, badges, notifications, cloud sync popups, or multi-megabyte databases.
+- **🚫 Zero AI Slop & No Browser Hijacking**: Keeps your standard new tab and search bar untouched. No login walls, badges, notifications, cloud sync popups, or multi-megabyte databases.
+- **🖥️ Native Side Panel + Full Tab**:
+  - Open in Chrome's native Side Panel while reading, coding, or browsing.
+  - 1-click expand button (`⤢`) pops out to a spacious full tab anytime you want deep writing.
+  - Automatic focus synchronization keeps notes in sync between side panel and full tab.
 - **⌨️ 100% Keyboard Driven**:
-  - `Cmd + T` — Instant scratchpad on new tab
-  - `Option + N` (`⌥N` / `Alt + N`) or `c` — Create new note (prevents browser new window collision)
+  - `Cmd + Shift + S` — Toggle Sumi in Side Panel
+  - `Option + N` (`⌥N` / `Alt + N`) or `c` — Create new note
   - `Cmd + K` — Instant search (< 5ms response)
   - `Cmd + P` — Pin / unpin note to top
   - `Cmd + B` / `Cmd + I` — True inline bold & italic
@@ -23,7 +27,6 @@ Inspired by traditional Japanese black ink (**墨** - *Sumi*), **Sumi** provides
 - **🔒 100% Offline & Private**: Zero analytics, zero tracking, zero external network requests.
 - **💾 Local-First Persistence**: Synchronous debounced persist (200ms) to IndexedDB with automatic ghost note pruning (empty abandoned notes are cleaned up silently).
 - **📦 Data Portability**: 1-click JSON database backup & import, 1-click Markdown download per note.
-- **🧩 Dual Target Distribution**: Runs as a standard web app or as an unpacked Chrome / Brave / Edge Manifest V3 extension.
 
 ---
 
@@ -61,7 +64,7 @@ Visit `http://localhost:5173` in your browser.
 2. Open Chrome (or Brave / Edge) and navigate to `chrome://extensions`.
 3. Enable **Developer mode** (toggle in the top-right corner).
 4. Click **Load unpacked** and select the `dist` folder inside the `sumi` repository.
-5. Open a new tab (`Cmd + T`) — Sumi will open instantly!
+5. Click the Sumi toolbar icon or press **`Cmd + Shift + S`** to toggle Sumi in your Side Panel on any website! You can also click the expand icon (`⤢`) to use it in a full browser tab.
 
 ---
 
