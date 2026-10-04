@@ -91,7 +91,7 @@ Sumi's visual identity, typography, and color tokens are formally specified usin
 
 ### Local Development
 ```bash
-git clone https://github.com/invaibhavdev/sumi.git
+git clone https://github.com/vmlgtm/sumi.git
 cd sumi
 pnpm install
 pnpm run dev
