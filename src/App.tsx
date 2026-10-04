@@ -3,6 +3,7 @@ import { useNotes } from './hooks/useNotes';
 import { useTheme } from './hooks/useTheme';
 import { Sidebar } from './components/Sidebar';
 import { Editor } from './components/Editor';
+import { SumiLogo } from './components/Icon';
 
 const ShortcutsModal = React.lazy(() =>
   import('./components/ShortcutsModal').then(m => ({ default: m.ShortcutsModal }))
@@ -185,8 +186,8 @@ export const App: React.FC = () => {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-white dark:bg-ink-950 text-ink-900 dark:text-ink-100 select-none">
         <div className="flex flex-col items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center font-bold text-sm shadow-sm animate-pulse">
-            墨
+          <span className="w-8 h-8 rounded-lg bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center shadow-sm animate-pulse">
+            <SumiLogo className="w-4 h-4" />
           </span>
           <span className="text-xs font-medium text-ink-400 dark:text-ink-500">Loading Sumi...</span>
         </div>

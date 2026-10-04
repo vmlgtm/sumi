@@ -134,7 +134,7 @@ export function downloadFile(filename: string, content: string, mimeType: string
 export function createWelcomeNote(): Note {
   return {
     id: 'welcome-to-sumi',
-    title: 'Welcome to Sumi (墨)',
+    title: 'Welcome to Sumi',
     contentHtml: `<p><strong>Sumi</strong> is a local-first, distraction-free scratchpad.</p><ul><li><strong>⌥N / c</strong> — New note</li><li><strong>⌘K</strong> — Search & links</li><li><strong>⌘E / \`code\`</strong> — Inline code</li><li><strong>- [ ]</strong> — Checklist</li><li><strong>⌘/</strong> — All shortcuts</li></ul>`,
     pinned: true,
     createdAt: Date.now(),

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { SumiLogo } from './Icon';
 
 interface ShortcutsModalProps {
   isOpen: boolean;
@@ -100,8 +101,8 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
       >
         <div className="flex items-center justify-between pb-3 border-b border-ink-100 dark:border-ink-800">
           <div className="flex items-center space-x-2">
-            <span className="w-5 h-5 rounded bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center font-bold text-xs">
-              墨
+            <span className="w-5 h-5 rounded bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center shadow-xs">
+              <SumiLogo className="w-3 h-3" />
             </span>
             <h2 className="text-sm font-semibold tracking-wide">Keyboard Shortcuts</h2>
           </div>
@@ -138,7 +139,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
         </div>
 
         <div className="pt-3 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-[11px] text-ink-400 dark:text-ink-500">
-          <span>Sumi (墨) &bull; Zero tracking, 100% offline</span>
+          <span>Sumi &bull; Zero tracking, 100% offline</span>
           <button
             onClick={onClose}
             className="px-3 py-1 rounded bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 hover:bg-ink-900 dark:hover:bg-white text-xs font-medium transition-colors"

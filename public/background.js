@@ -1,4 +1,4 @@
-// Sumi (墨) - Background Service Worker
+// Sumi - Background Service Worker
 
 // Enable side panel toggle when clicking the extension icon
 if (typeof chrome !== 'undefined' && chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {

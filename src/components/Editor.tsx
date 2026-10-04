@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Note, SaveStatus } from '../types';
 import { isValidUrl, sanitizeUrl } from '../utils';
-import { Icon } from './Icon';
+import { Icon, SumiLogo } from './Icon';
 
 interface EditorProps {
   note: Note | null;
@@ -667,9 +667,11 @@ export const Editor: React.FC<EditorProps> = ({
   if (!note) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center text-ink-400 dark:text-ink-600 p-8 select-none bg-white dark:bg-ink-950">
-        <div className="text-3xl mb-2 text-ink-900 dark:text-ink-100">墨</div>
-        <p className="text-xs">No active note</p>
-        <p className="text-xs text-ink-300 dark:text-ink-600 mt-1">Press ⌥N or c to create a note</p>
+        <div className="w-10 h-10 mb-3 rounded-xl bg-ink-100 dark:bg-ink-900 text-ink-800 dark:text-ink-200 flex items-center justify-center shadow-2xs">
+          <SumiLogo className="w-5 h-5" />
+        </div>
+        <p className="text-xs font-medium text-ink-700 dark:text-ink-300">No active note</p>
+        <p className="text-xs text-ink-400 dark:text-ink-500 mt-1">Press ⌥N or c to create a note</p>
       </div>
     );
   }

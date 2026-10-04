@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Sumi (墨) - Notes",
+  "name": "Sumi - Notes",
   "version": "1.0.0",
   "description": "Ultra-fast, distraction-free notes in your side panel or dedicated tab.",
   "permissions": [

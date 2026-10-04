@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Note } from '../types';
 import { formatRelativeTime, stripHtml } from '../utils';
-import { Icon } from './Icon';
+import { Icon, SumiLogo } from './Icon';
 
 interface SidebarProps {
   notes: Note[];
@@ -108,8 +108,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Header & Branding */}
         <div className="p-3 pb-2 flex items-center justify-between border-b border-ink-200/60 dark:border-ink-800/60">
           <div className="flex items-center space-x-2">
-            <span className="w-5 h-5 rounded-md bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center font-bold text-xs tracking-tighter shadow-sm">
-              墨
+            <span className="w-5 h-5 rounded-md bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center shadow-xs">
+              <SumiLogo className="w-3 h-3" />
             </span>
             <span className="font-semibold text-xs tracking-wider uppercase text-ink-900 dark:text-ink-50">
               Sumi
