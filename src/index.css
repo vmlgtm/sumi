@@ -104,6 +104,29 @@ html.dark .sumi-editor code {
   border-color: #2C2C30;
 }
 
+/* Minimal Ink Hyperlinks (Zen / distraction-free aesthetic) */
+.sumi-editor a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: #C7C7CC;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.15s ease, opacity 0.15s ease;
+  cursor: text;
+}
+
+.sumi-editor a:hover {
+  text-decoration-color: #2C2C30;
+}
+
+html.dark .sumi-editor a {
+  text-decoration-color: #545458;
+}
+
+html.dark .sumi-editor a:hover {
+  text-decoration-color: #AEAEB2;
+}
+
 /* Interactive Task / Checklist Styling */
 .sumi-editor .task-item {
   display: flex;

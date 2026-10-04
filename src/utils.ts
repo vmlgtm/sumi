@@ -12,6 +12,22 @@ export function isNoteEmpty(title: unknown, contentHtml: unknown): boolean {
   return plainTitle.length === 0 && plainContent.length === 0;
 }
 
+export function sanitizeUrl(url: string): string {
+  const trimmed = (url || '').trim();
+  if (/^(https?:\/\/|mailto:|#)/i.test(trimmed)) {
+    return trimmed;
+  }
+  // Auto-prepend https:// if domain-like (e.g. github.com/foo)
+  if (/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}(\/.*)?$/i.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+  return '';
+}
+
+export function isValidUrl(url: string): boolean {
+  return Boolean(sanitizeUrl(url));
+}
+
 export function formatRelativeTime(timestamp: number): string {
   const now = Date.now();
   const diffSec = Math.floor((now - timestamp) / 1000);
@@ -62,6 +78,10 @@ export function htmlToMarkdown(title: string, html: string): string {
         return `*${childrenText}*`;
       case 'code':
         return `\`${childrenText}\``;
+      case 'a': {
+        const href = el.getAttribute('href') || '';
+        return `[${childrenText}](${href})`;
+      }
       case 'p': {
         if (el.classList.contains('task-item')) {
           const checkbox = el.querySelector<HTMLInputElement>('input[type="checkbox"]');
@@ -115,7 +135,7 @@ export function createWelcomeNote(): Note {
   return {
     id: 'welcome-to-sumi',
     title: 'Welcome to Sumi (墨)',
-    contentHtml: `<p><strong>Sumi</strong> is an ultra-fast, local-first scratchpad built for clarity and speed.</p><p>Key principles:</p><ul><li><strong>Zero lag:</strong> boots in under 50ms, ready to type instantly.</li><li><strong>Pure ink:</strong> crisp white canvas, clean typography, zero distraction.</li><li><strong>Local & private:</strong> 100% offline, zero tracking, notes saved instantly to your browser.</li></ul><p>Essential Shortcuts:</p><ul><li><strong>⌥N</strong> (or <strong>c</strong>) — New note</li><li><strong>⌘K</strong> — Instant search</li><li><strong>⌘P</strong> — Pin / unpin note</li><li><strong>⌘B</strong> / <strong>⌘I</strong> — Bold / Italic</li><li><strong>- </strong> followed by Space — Bulleted list</li><li><strong>⌘/</strong> — Keyboard cheat sheet</li></ul><p>Enjoy the clarity of ink on paper.</p>`,
+    contentHtml: `<p><strong>Sumi</strong> is a local-first, distraction-free scratchpad.</p><ul><li><strong>⌥N / c</strong> — New note</li><li><strong>⌘K</strong> — Search & links</li><li><strong>⌘E / \`code\`</strong> — Inline code</li><li><strong>- [ ]</strong> — Checklist</li><li><strong>⌘/</strong> — All shortcuts</li></ul>`,
     pinned: true,
     createdAt: Date.now(),
     updatedAt: Date.now(),

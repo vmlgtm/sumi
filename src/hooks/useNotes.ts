@@ -14,6 +14,9 @@ function sanitizeNotes(loaded: Note[]): Note[] {
   }));
 }
 
+const sortNotes = (list: Note[]): Note[] =>
+  list.sort((a, b) => (a.pinned === b.pinned ? b.updatedAt - a.updatedAt : a.pinned ? -1 : 1));
+
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -42,11 +45,7 @@ export function useNotes() {
           try {
             const raw = await storage.getAllNotes();
             const loaded = sanitizeNotes(raw);
-            const sorted = loaded.sort((a, b) => {
-              if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-              return b.updatedAt - a.updatedAt;
-            });
-            setNotes(sorted);
+            setNotes(sortNotes(loaded));
           } catch {
             // Silently ignore
           }
@@ -82,11 +81,7 @@ export function useNotes() {
             setIsLoading(false);
           }
         } else {
-          // Sort loaded notes: pinned first, then updatedAt desc
-          const sorted = [...loaded].sort((a, b) => {
-            if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-            return b.updatedAt - a.updatedAt;
-          });
+          const sorted = sortNotes([...loaded]);
           if (mounted) {
             setNotes(sorted);
             const initialId = (targetNoteId && sorted.some(n => n.id === targetNoteId))
@@ -116,11 +111,7 @@ export function useNotes() {
         const raw = await storage.getAllNotes();
         const loaded = sanitizeNotes(raw);
         if (loaded.length > 0) {
-          const sorted = [...loaded].sort((a, b) => {
-            if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-            return b.updatedAt - a.updatedAt;
-          });
-          setNotes(sorted);
+          setNotes(sortNotes([...loaded]));
         }
       } catch {
         // Silently ignore
@@ -362,10 +353,7 @@ export function useNotes() {
 
       await storage.bulkSaveNotes(validNotes);
       const all = await storage.getAllNotes();
-      const sorted = all.sort((a, b) => {
-        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-        return b.updatedAt - a.updatedAt;
-      });
+      const sorted = sortNotes(all);
 
       setNotes(sorted);
       if (sorted[0]) setActiveId(sorted[0].id);

@@ -3,7 +3,10 @@ import { useNotes } from './hooks/useNotes';
 import { useTheme } from './hooks/useTheme';
 import { Sidebar } from './components/Sidebar';
 import { Editor } from './components/Editor';
-import { ShortcutsModal } from './components/ShortcutsModal';
+
+const ShortcutsModal = React.lazy(() =>
+  import('./components/ShortcutsModal').then(m => ({ default: m.ShortcutsModal }))
+);
 
 export const App: React.FC = () => {
   const {
@@ -63,8 +66,13 @@ export const App: React.FC = () => {
         activeEl?.tagName === 'TEXTAREA' ||
         activeEl?.getAttribute('contenteditable') === 'true';
 
-      // Cmd + K: Focus Search
+      // Cmd + K: Link in editor / Search elsewhere
       if (isMod && (e.key === 'k' || e.key === 'K')) {
+        const inEditor = activeEl?.getAttribute('contenteditable') === 'true' || activeEl?.closest('[contenteditable="true"]');
+        if (inEditor) {
+          // Yield to Editor's handleContentKeyDown for link insertion/edit
+          return;
+        }
         e.preventDefault();
         if (isSidebarCollapsed) setIsSidebarCollapsed(false);
         searchInputRef.current?.focus();
@@ -229,10 +237,14 @@ export const App: React.FC = () => {
       />
 
       {/* Shortcuts Cheatsheet Modal */}
-      <ShortcutsModal
-        isOpen={isShortcutsOpen}
-        onClose={() => setIsShortcutsOpen(false)}
-      />
+      {isShortcutsOpen && (
+        <React.Suspense fallback={null}>
+          <ShortcutsModal
+            isOpen={isShortcutsOpen}
+            onClose={() => setIsShortcutsOpen(false)}
+          />
+        </React.Suspense>
+      )}
 
       {/* Toast Notification */}
       {toastMessage && (

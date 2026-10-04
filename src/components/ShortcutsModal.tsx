@@ -44,7 +44,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
       title: 'Navigation & Organization',
       shortcuts: [
         { key: `${altKey}N / c`, desc: 'New note' },
-        { key: `${modKey}K`, desc: 'Focus instant search' },
+        { key: `${modKey}K`, desc: 'Instant search (global)' },
         { key: `${modKey}P`, desc: 'Toggle pinned status' },
         { key: '↑ / ↓', desc: 'Navigate note list' },
         { key: 'Enter', desc: 'Open highlighted note' },
@@ -58,6 +58,9 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
         { key: `${modKey}I`, desc: 'Italic text' },
         { key: `${modKey}E`, desc: 'Inline code' },
         { key: '`code`', desc: 'Auto code chip' },
+        { key: `${modKey}K`, desc: 'Insert / edit link' },
+        { key: '[text](url)', desc: 'Markdown link' },
+        { key: `${modKey}Click`, desc: 'Open link in new tab' },
         { key: '[] [Space]', desc: 'Checklist task' },
         { key: '- [Space]', desc: 'Bulleted list' },
         { key: '1. [Space]', desc: 'Numbered list' },
