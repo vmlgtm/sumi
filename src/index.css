@@ -8,15 +8,16 @@
     margin: 0;
     padding: 0;
     background-color: #FFFFFF;
-    color: #09090B;
+    color: #111113;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Soft, warm charcoal background in dark mode (avoids pitch black eye-strain) */
   html.dark, html.dark body {
-    background-color: #09090B;
-    color: #FAFAFA;
+    background-color: #1C1C1E;
+    color: #F4F4F6;
   }
 
   /* Custom minimal scrollbar */
@@ -28,18 +29,18 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #E4E4E7;
+    background: #E5E5EA;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #A1A1AA;
+    background: #AEAEB2;
   }
 
   html.dark ::-webkit-scrollbar-thumb {
-    background: #27272A;
+    background: #2C2C30;
   }
   html.dark ::-webkit-scrollbar-thumb:hover {
-    background: #3F3F46;
+    background: #3E3E44;
   }
 }
 
@@ -73,7 +74,7 @@
 .sumi-editor strong,
 .sumi-editor b {
   font-weight: 600;
-  color: #09090B;
+  color: #111113;
 }
 
 html.dark .sumi-editor strong,
@@ -92,15 +93,15 @@ html.dark .sumi-editor b {
   font-size: 0.85em;
   padding: 0.15rem 0.35rem;
   border-radius: 0.25rem;
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid #E4E4E7;
+  background-color: #F2F2F7;
+  color: #1C1C1E;
+  border: 1px solid #E5E5EA;
 }
 
 html.dark .sumi-editor code {
-  background-color: #18181B;
-  color: #F4F4F5;
-  border-color: #27272A;
+  background-color: #242428;
+  color: #F4F4F6;
+  border-color: #2C2C30;
 }
 
 /* Interactive Task / Checklist Styling */
@@ -118,7 +119,7 @@ html.dark .sumi-editor code {
   height: 14px;
   margin-top: 5px;
   border-radius: 3px;
-  border: 1.5px solid #A1A1AA;
+  border: 1.5px solid #AEAEB2;
   background-color: transparent;
   cursor: pointer;
   display: inline-grid;
@@ -128,13 +129,17 @@ html.dark .sumi-editor code {
 }
 
 .sumi-editor .task-checkbox:checked {
-  background-color: #09090B;
-  border-color: #09090B;
+  background-color: #1C1C1E;
+  border-color: #1C1C1E;
+}
+
+html.dark .sumi-editor .task-checkbox {
+  border-color: #636366;
 }
 
 html.dark .sumi-editor .task-checkbox:checked {
-  background-color: #FAFAFA;
-  border-color: #FAFAFA;
+  background-color: #E5E5EA;
+  border-color: #E5E5EA;
 }
 
 .sumi-editor .task-checkbox:checked::before {
@@ -147,27 +152,27 @@ html.dark .sumi-editor .task-checkbox:checked {
 }
 
 html.dark .sumi-editor .task-checkbox:checked::before {
-  border-left-color: #09090B;
-  border-bottom-color: #09090B;
+  border-left-color: #1C1C1E;
+  border-bottom-color: #1C1C1E;
 }
 
 .sumi-editor .task-item.task-done .task-text {
   text-decoration: line-through;
-  color: #A1A1AA;
+  color: #AEAEB2;
 }
 
 html.dark .sumi-editor .task-item.task-done .task-text {
-  color: #71717A;
+  color: #8E8E93;
 }
 
 /* Empty placeholder simulation */
 .sumi-placeholder:empty:before {
   content: attr(data-placeholder);
-  color: #A1A1AA;
+  color: #AEAEB2;
   pointer-events: none;
   display: block;
 }
 
 html.dark .sumi-placeholder:empty:before {
-  color: #52525B;
+  color: #636366;
 }

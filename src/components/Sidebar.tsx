@@ -99,7 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
 
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-30 flex flex-col bg-ink-50/95 dark:bg-[#121215]/95 backdrop-blur-md md:backdrop-blur-none border-r border-ink-200 dark:border-ink-800 transition-all duration-200 ease-in-out shrink-0 select-none ${
+        className={`fixed md:static inset-y-0 left-0 z-30 flex flex-col bg-ink-50/95 dark:bg-ink-900/95 backdrop-blur-md md:backdrop-blur-none border-r border-ink-200 dark:border-ink-800 transition-all duration-200 ease-in-out shrink-0 select-none ${
           isCollapsed ? '-translate-x-full md:translate-x-0 md:w-0 md:border-r-0 md:overflow-hidden' : 'w-64 translate-x-0'
         }`}
         aria-label="Notes navigation"
@@ -312,7 +312,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Footer toolbar */}
-        <div className="p-2.5 border-t border-ink-200/60 dark:border-ink-800/60 bg-ink-50/50 dark:bg-[#121215]/50 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
+        <div className="p-2.5 border-t border-ink-200/60 dark:border-ink-800/60 bg-ink-50/50 dark:bg-ink-900/50 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
           <span className="text-[11px]">
             {notes.length} {notes.length === 1 ? 'note' : 'notes'}
           </span>

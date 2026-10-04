@@ -9,15 +9,19 @@ export default {
     extend: {
       colors: {
         ink: {
-          950: '#09090B',
-          900: '#18181B',
-          800: '#27272A',
-          700: '#3F3F46',
-          500: '#71717A',
-          400: '#A1A1AA',
-          200: '#E4E4E7',
-          100: '#F4F4F5',
-          50: '#F9FAFB',
+          // Warm Japanese charcoal / slate palette (Apple/Linear inspired, avoids harsh pitch black)
+          950: '#1C1C1E', // Canvas in dark mode (comfortable dark charcoal)
+          900: '#151517', // Sidebar in dark mode (slightly deeper slate)
+          850: '#202024', // Subtle elevated background
+          800: '#2C2C30', // Active item / borders in dark mode
+          700: '#3E3E44', // Subtle buttons / outlines
+          600: '#636366', // Muted secondary text in dark mode
+          500: '#8E8E93', // Muted secondary text
+          400: '#AEAEB2', // Secondary icons / timestamps
+          300: '#D1D1D6', // Body text in dark mode
+          200: '#E5E5EA', // Light mode border
+          100: '#F2F2F7', // Light mode subtle active
+          50: '#F9FAFB',  // Light mode sidebar
         },
       },
       fontFamily: {
