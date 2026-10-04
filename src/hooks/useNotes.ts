@@ -18,6 +18,34 @@ export function useNotes() {
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const statusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncChannelRef = useRef<BroadcastChannel | null>(null);
+
+  // Initialize BroadcastChannel for instant cross-tab / cross-window sync
+  useEffect(() => {
+    if (typeof BroadcastChannel !== 'undefined') {
+      const channel = new BroadcastChannel('sumi_sync_channel');
+      syncChannelRef.current = channel;
+
+      channel.onmessage = async (e) => {
+        if (e.data?.type === 'note_updated') {
+          try {
+            const loaded = await storage.getAllNotes();
+            const sorted = loaded.sort((a, b) => {
+              if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+              return b.updatedAt - a.updatedAt;
+            });
+            setNotes(sorted);
+          } catch {
+            // Silently ignore
+          }
+        }
+      };
+
+      return () => {
+        channel.close();
+      };
+    }
+  }, []);
 
   // Initialize and load notes
   useEffect(() => {
@@ -27,6 +55,10 @@ export function useNotes() {
       try {
         const loaded = await storage.getAllNotes();
         if (!mounted) return;
+
+        // Check if a specific note was requested via URL query (e.g. Omnibox navigation)
+        const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+        const targetNoteId = urlParams?.get('noteId');
 
         if (loaded.length === 0) {
           const welcome = createWelcomeNote();
@@ -44,7 +76,10 @@ export function useNotes() {
           });
           if (mounted) {
             setNotes(sorted);
-            setActiveId(sorted[0]?.id || null);
+            const initialId = (targetNoteId && sorted.some(n => n.id === targetNoteId))
+              ? targetNoteId
+              : (sorted[0]?.id || null);
+            setActiveId(initialId);
             setIsLoading(false);
           }
         }
@@ -73,8 +108,8 @@ export function useNotes() {
           });
           setNotes(sorted);
         }
-      } catch (err) {
-        // Silently ignore sync errors
+      } catch {
+        // Silently ignore
       }
     };
 
@@ -88,6 +123,7 @@ export function useNotes() {
     if (target && isNoteEmpty(target.title, target.contentHtml)) {
       storage.deleteNote(noteId);
       setNotes(prev => prev.filter(n => n.id !== noteId));
+      syncChannelRef.current?.postMessage({ type: 'note_updated', noteId });
       return true;
     }
     return false;
@@ -117,7 +153,7 @@ export function useNotes() {
   }, []);
 
   // Create a new note
-  const createNote = useCallback(() => {
+  const createNote = useCallback((initialTitle = '', initialContent = '') => {
     // Prune current note if it was empty
     if (activeIdRef.current) {
       pruneGhostNote(activeIdRef.current);
@@ -125,8 +161,8 @@ export function useNotes() {
 
     const newNote: Note = {
       id: 'note_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-      title: '',
-      contentHtml: '',
+      title: initialTitle,
+      contentHtml: initialContent,
       pinned: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -135,6 +171,8 @@ export function useNotes() {
     setNotes(prev => [newNote, ...prev]);
     setActiveId(newNote.id);
     setSearchQuery('');
+    storage.saveNote(newNote);
+    syncChannelRef.current?.postMessage({ type: 'note_updated', noteId: newNote.id });
     return newNote;
   }, [pruneGhostNote]);
 
@@ -154,7 +192,7 @@ export function useNotes() {
     return notes.find(n => n.id === activeId) || null;
   }, [notes, activeId]);
 
-  // Update active note content & debounced persist
+  // Update active note content & debounced quiet persist
   const updateActiveNote = useCallback((updates: Partial<Pick<Note, 'title' | 'contentHtml'>>) => {
     const currentId = activeIdRef.current;
     if (!currentId) return;
@@ -181,26 +219,27 @@ export function useNotes() {
       });
     });
 
-    setSaveStatus('saving');
-
+    // AC-FIX-1: Quiet Save - Do NOT flicker 'saving' status on every keystroke!
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    if (statusTimerRef.current) clearTimeout(statusTimerRef.current);
+
     saveTimerRef.current = setTimeout(async () => {
       const noteToSave = notesRef.current.find(n => n.id === currentId);
       if (noteToSave) {
         if (isNoteEmpty(noteToSave.title, noteToSave.contentHtml)) {
-          // If empty, do not persist to IndexedDB
           await storage.deleteNote(noteToSave.id);
         } else {
           await storage.saveNote(noteToSave);
+          syncChannelRef.current?.postMessage({ type: 'note_updated', noteId: noteToSave.id });
         }
       }
 
+      // Show tranquil 'saved' checkmark only after typing stops for 1.2s
       setSaveStatus('saved');
-      if (statusTimerRef.current) clearTimeout(statusTimerRef.current);
       statusTimerRef.current = setTimeout(() => {
         setSaveStatus('idle');
-      }, 1200);
-    }, 200);
+      }, 1500);
+    }, 250);
   }, []);
 
   // Toggle pinned status
@@ -213,6 +252,7 @@ export function useNotes() {
         if (n.id === targetId) {
           const updated = { ...n, pinned: !n.pinned, updatedAt: Date.now() };
           storage.saveNote(updated);
+          syncChannelRef.current?.postMessage({ type: 'note_updated', noteId: updated.id });
           return updated;
         }
         return n;
@@ -228,6 +268,7 @@ export function useNotes() {
   // Delete note
   const deleteNote = useCallback(async (id: string) => {
     await storage.deleteNote(id);
+    syncChannelRef.current?.postMessage({ type: 'note_updated', noteId: id });
 
     setNotes(prev => {
       const next = prev.filter(n => n.id !== id);
@@ -311,6 +352,7 @@ export function useNotes() {
 
       setNotes(sorted);
       if (sorted[0]) setActiveId(sorted[0].id);
+      syncChannelRef.current?.postMessage({ type: 'note_updated', noteId: 'all' });
       return { success: true, count: validNotes.length };
     } catch (err: any) {
       console.error('Import failed', err);

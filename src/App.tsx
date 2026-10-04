@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNotes } from './hooks/useNotes';
+import { useTheme } from './hooks/useTheme';
 import { Sidebar } from './components/Sidebar';
 import { Editor } from './components/Editor';
 import { ShortcutsModal } from './components/ShortcutsModal';
@@ -24,6 +25,8 @@ export const App: React.FC = () => {
     importFromJson,
   } = useNotes();
 
+  const { isDark, toggleTheme } = useTheme();
+
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     () => typeof window !== 'undefined' && window.innerWidth < 768
@@ -40,8 +43,12 @@ export const App: React.FC = () => {
     }, 3000);
   }, []);
 
+  // AC-FIX-2: Open in full tab and close side panel
   const handleOpenFullTab = useCallback(() => {
     window.open(window.location.href, '_blank');
+    setTimeout(() => {
+      window.close();
+    }, 60);
   }, []);
 
   // Global keyboard shortcuts
@@ -62,6 +69,13 @@ export const App: React.FC = () => {
         if (isSidebarCollapsed) setIsSidebarCollapsed(false);
         searchInputRef.current?.focus();
         searchInputRef.current?.select();
+        return;
+      }
+
+      // Cmd + Shift + D: Toggle Theme
+      if (isMod && e.shiftKey && (e.key === 'd' || e.key === 'D')) {
+        e.preventDefault();
+        toggleTheme();
         return;
       }
 
@@ -108,7 +122,6 @@ export const App: React.FC = () => {
       // Cmd + Backspace: Delete Note
       if (isMod && e.key === 'Backspace') {
         if (activeId && document.activeElement !== searchInputRef.current) {
-          // If cursor is not in an active editable input that is doing standard backspace
           const tagName = document.activeElement?.tagName.toLowerCase();
           const isContentEditable = document.activeElement?.getAttribute('contenteditable') === 'true';
 
@@ -142,6 +155,7 @@ export const App: React.FC = () => {
     isShortcutsOpen,
     isSidebarCollapsed,
     showToast,
+    toggleTheme,
   ]);
 
   const handleImportBackup = async (file: File) => {
@@ -161,19 +175,19 @@ export const App: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-white text-ink-900 select-none">
+      <div className="h-screen w-screen flex items-center justify-center bg-white dark:bg-ink-950 text-ink-900 dark:text-ink-100 select-none">
         <div className="flex flex-col items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-ink-950 text-white flex items-center justify-center font-bold text-sm shadow-sm animate-pulse">
+          <span className="w-8 h-8 rounded-lg bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 flex items-center justify-center font-bold text-sm shadow-sm animate-pulse">
             墨
           </span>
-          <span className="text-xs font-medium text-ink-400">Loading Sumi...</span>
+          <span className="text-xs font-medium text-ink-400 dark:text-ink-500">Loading Sumi...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-screen flex bg-white text-ink-950 overflow-hidden font-sans">
+    <div className="h-screen w-screen flex bg-white dark:bg-ink-950 text-ink-950 dark:text-ink-50 overflow-hidden font-sans transition-colors duration-150">
       {/* Sidebar */}
       <Sidebar
         notes={notes}
@@ -200,6 +214,8 @@ export const App: React.FC = () => {
       <Editor
         note={activeNote}
         saveStatus={saveStatus}
+        isDark={isDark}
+        onToggleTheme={toggleTheme}
         onUpdate={updateActiveNote}
         onTogglePin={() => togglePin()}
         onDelete={() => {
@@ -220,7 +236,7 @@ export const App: React.FC = () => {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-4 right-4 z-50 bg-ink-950 text-white text-xs px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
+        <div className="fixed bottom-4 right-4 z-50 bg-ink-950 dark:bg-ink-100 text-white dark:text-ink-950 text-xs px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-150 border border-ink-800 dark:border-ink-200">
           <span>{toastMessage}</span>
         </div>
       )}

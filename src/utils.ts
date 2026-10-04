@@ -60,8 +60,22 @@ export function htmlToMarkdown(title: string, html: string): string {
       case 'em':
       case 'i':
         return `*${childrenText}*`;
-      case 'p':
+      case 'code':
+        return `\`${childrenText}\``;
+      case 'p': {
+        if (el.classList.contains('task-item')) {
+          const checkbox = el.querySelector<HTMLInputElement>('input[type="checkbox"]');
+          const isChecked = checkbox?.checked || checkbox?.hasAttribute('checked') || el.classList.contains('task-done');
+          const textEl = el.querySelector('.task-text') || el;
+          const taskContent = Array.from(textEl.childNodes)
+            .filter(n => (n as HTMLElement).tagName?.toLowerCase() !== 'input' && !(n as HTMLElement).classList?.contains('task-checkbox'))
+            .map(processNode)
+            .join('')
+            .trim();
+          return `${isChecked ? '- [x]' : '- [ ]'} ${taskContent}\n`;
+        }
         return `${childrenText}\n\n`;
+      }
       case 'br':
         return '\n';
       case 'ul':

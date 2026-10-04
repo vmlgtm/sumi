@@ -8,10 +8,16 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        passes: 2,
+        drop_debugger: true,
+      },
+      format: {
+        comments: false,
       },
     },
+    target: 'es2022',
   },
 });

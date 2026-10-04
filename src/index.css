@@ -14,6 +14,11 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  html.dark, html.dark body {
+    background-color: #09090B;
+    color: #FAFAFA;
+  }
+
   /* Custom minimal scrollbar */
   ::-webkit-scrollbar {
     width: 4px;
@@ -28,6 +33,13 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #A1A1AA;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #27272A;
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #3F3F46;
   }
 }
 
@@ -64,9 +76,88 @@
   color: #09090B;
 }
 
+html.dark .sumi-editor strong,
+html.dark .sumi-editor b {
+  color: #FFFFFF;
+}
+
 .sumi-editor em,
 .sumi-editor i {
   font-style: italic;
+}
+
+/* Inline Code Pill */
+.sumi-editor code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  background-color: #F4F4F5;
+  color: #09090B;
+  border: 1px solid #E4E4E7;
+}
+
+html.dark .sumi-editor code {
+  background-color: #18181B;
+  color: #F4F4F5;
+  border-color: #27272A;
+}
+
+/* Interactive Task / Checklist Styling */
+.sumi-editor .task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+.sumi-editor .task-checkbox {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 5px;
+  border-radius: 3px;
+  border: 1.5px solid #A1A1AA;
+  background-color: transparent;
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  transition: all 120ms ease-in-out;
+}
+
+.sumi-editor .task-checkbox:checked {
+  background-color: #09090B;
+  border-color: #09090B;
+}
+
+html.dark .sumi-editor .task-checkbox:checked {
+  background-color: #FAFAFA;
+  border-color: #FAFAFA;
+}
+
+.sumi-editor .task-checkbox:checked::before {
+  content: "";
+  width: 8px;
+  height: 5px;
+  border-left: 1.5px solid #FFFFFF;
+  border-bottom: 1.5px solid #FFFFFF;
+  transform: rotate(-45deg) translate(0.5px, -0.5px);
+}
+
+html.dark .sumi-editor .task-checkbox:checked::before {
+  border-left-color: #09090B;
+  border-bottom-color: #09090B;
+}
+
+.sumi-editor .task-item.task-done .task-text {
+  text-decoration: line-through;
+  color: #A1A1AA;
+}
+
+html.dark .sumi-editor .task-item.task-done .task-text {
+  color: #71717A;
 }
 
 /* Empty placeholder simulation */
@@ -75,4 +166,8 @@
   color: #A1A1AA;
   pointer-events: none;
   display: block;
+}
+
+html.dark .sumi-placeholder:empty:before {
+  color: #52525B;
 }
